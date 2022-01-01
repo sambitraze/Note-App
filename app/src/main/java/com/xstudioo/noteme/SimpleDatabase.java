@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class SimpleDatabase extends SQLiteOpenHelper {
@@ -21,6 +23,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
     private static final String KEY_CONTENT = "content";
     private static final String KEY_DATE = "date";
     private static final String KEY_TIME = "time";
+    private static final String KEY_STATUS = "status";
 
     public SimpleDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,7 +38,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
                 KEY_CONTENT + " TEXT," +
                 KEY_DATE + " TEXT," +
                 KEY_TIME + " TEXT," +
-                "KEY_STATUS" + " TEXT"
+                KEY_STATUS + " TEXT"
                 + " )";
         db.execSQL(createDb);
     }
@@ -57,7 +60,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
         v.put(KEY_CONTENT, note.getContent());
         v.put(KEY_DATE, note.getDate());
         v.put(KEY_TIME, note.getTime());
-        v.put("KEY_STATUS", note.getStatus());
+        v.put(KEY_STATUS, note.getStatus());
 
         // inserting data into db
         return db.insert(TABLE_NAME, null, v);
@@ -65,7 +68,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
 
     public Note getNote(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] query = new String[]{KEY_ID, KEY_TITLE, KEY_CONTENT, KEY_DATE, KEY_TIME, "KEY_STATUS"};
+        String[] query = new String[]{KEY_ID, KEY_TITLE, KEY_CONTENT, KEY_DATE, KEY_TIME, KEY_STATUS};
         Cursor cursor = db.query(TABLE_NAME, query, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -80,11 +83,23 @@ public class SimpleDatabase extends SQLiteOpenHelper {
         );
     }
 
+    class sortByStatus implements Comparator<Note> {
+        // Used for sorting in ascending order of
+        // roll number
+        public int compare(Note a, Note b)
+        {
+            String statusA = a.getStatus();
+            String statusB = b.getStatus();
+            return statusA.compareTo(statusB);
+        }
+    }
+
     public List<Note> getAllNotes() {
-        List<Note> allNotes = new ArrayList<>();
+        ArrayList<Note> allNotes = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + KEY_ID + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
+        Log.d("note ", "Note: " + cursor);
         if (cursor.moveToFirst()) {
             do {
                 Note note = new Note();
@@ -98,6 +113,8 @@ public class SimpleDatabase extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        Collections.sort(allNotes,new sortByStatus());
+
         return allNotes;
 
     }
@@ -110,6 +127,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
         c.put(KEY_CONTENT, note.getContent());
         c.put(KEY_DATE, note.getDate());
         c.put(KEY_TIME, note.getTime());
+        c.put(KEY_STATUS, note.getStatus());
         return db.update(TABLE_NAME, c, KEY_ID + "=?", new String[]{String.valueOf(note.getId())});
     }
 

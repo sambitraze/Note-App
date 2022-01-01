@@ -55,11 +55,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements
         if (status == null)
             return;
 
-        if (status.equals("Low"))
+        if (status.equals("a"))
             color = MainActivity.context.getResources().getColor(R.color.white);
-        if (status.equals("Med"))
+        if (status.equals("b"))
             color = MainActivity.context.getResources().getColor(R.color.green);
-        if (status.equals("High"))
+        if (status.equals("c"))
             color = MainActivity.context.getResources().getColor(R.color.red);
 
         viewHolder.constraintLayout.setCardBackgroundColor(color);

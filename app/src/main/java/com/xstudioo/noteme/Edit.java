@@ -27,7 +27,7 @@ public class Edit extends AppCompatActivity {
     long nId;
     CardView cvBtnFemale, cvBtnMale, cvBtnOther;
     TextView tvFemale, tvMale, tvOther;
-    String strGender = "Med";
+    String strGender = "b";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,19 @@ public class Edit extends AppCompatActivity {
         nTitle.setText(title);
         nContent.setText(content);
 
+        String st = note.getStatus();
+
+        if(st.equals("a")){
+            Log.d("Status", ":stataus: " + st);
+            initLow(null);
+        }else if(st.equals("b")){
+            Log.d("Status", ":stataus: " + st);
+            initMed(null);
+        }else if(st.equals("c")){
+            Log.d("Status", ":stataus: " + st);
+            initHigh(null);
+        }
+
         // set current date and time
         c = Calendar.getInstance();
         todaysDate = c.get(Calendar.YEAR) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH);
@@ -124,18 +137,6 @@ public class Edit extends AppCompatActivity {
     }
 
     public void initLow(View view) {
-        initFemale(null);
-    }
-
-    public void initMed(View view) {
-        initMale(null);
-    }
-
-    public void initHigh(View view) {
-        initOther(null);
-    }
-
-    public void initFemale(View view) {
         cvBtnFemale.setCardBackgroundColor(getResources().getColor(R.color.green));
         cvBtnMale.setCardBackgroundColor(getResources().getColor(R.color.white));
         cvBtnOther.setCardBackgroundColor(getResources().getColor(R.color.white));
@@ -144,10 +145,10 @@ public class Edit extends AppCompatActivity {
         cvBtnMale.setCardElevation(0);
         cvBtnOther.setCardElevation(0);
 
-        strGender = "Low";
+        strGender = "a";
     }
 
-    public void initMale(View view) {
+    public void initMed(View view) {
         cvBtnFemale.setCardBackgroundColor(getResources().getColor(R.color.white));
         cvBtnMale.setCardBackgroundColor(getResources().getColor(R.color.green));
         cvBtnOther.setCardBackgroundColor(getResources().getColor(R.color.white));
@@ -156,10 +157,11 @@ public class Edit extends AppCompatActivity {
         cvBtnFemale.setCardElevation(0);
         cvBtnOther.setCardElevation(0);
 
-        strGender = "Med";
+        strGender = "b";
     }
 
-    public void initOther(View view) {
+    public void initHigh(View view) {
+
         cvBtnOther.setCardBackgroundColor(getResources().getColor(R.color.green));
         cvBtnMale.setCardBackgroundColor(getResources().getColor(R.color.white));
         cvBtnFemale.setCardBackgroundColor(getResources().getColor(R.color.white));
@@ -169,9 +171,6 @@ public class Edit extends AppCompatActivity {
         cvBtnFemale.setCardElevation(0);
 
 
-        strGender = "High";
-
+        strGender = "c";
     }
-
-
 }

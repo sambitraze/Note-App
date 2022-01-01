@@ -25,7 +25,7 @@ public class AddNote extends AppCompatActivity {
     String currentTime;
     CardView cvBtnFemale, cvBtnMale, cvBtnOther;
     TextView tvFemale, tvMale, tvOther;
-    String strGender = "Med";
+    String strGender = "b";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +142,7 @@ public class AddNote extends AppCompatActivity {
         cvBtnMale.setCardElevation(0);
         cvBtnOther.setCardElevation(0);
 
-        strGender = "Low";
+        strGender = "a";
     }
 
     public void initMale(View view) {
@@ -154,7 +154,7 @@ public class AddNote extends AppCompatActivity {
         cvBtnFemale.setCardElevation(0);
         cvBtnOther.setCardElevation(0);
 
-        strGender = "Med";
+        strGender = "b";
     }
 
     public void initOther(View view) {
@@ -167,7 +167,7 @@ public class AddNote extends AppCompatActivity {
         cvBtnFemale.setCardElevation(0);
 
 
-        strGender = "High";
+        strGender = "c";
 
     }
 
