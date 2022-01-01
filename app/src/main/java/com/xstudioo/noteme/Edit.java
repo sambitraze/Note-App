@@ -7,7 +7,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,22 +81,17 @@ public class Edit extends AppCompatActivity {
         String st = note.getStatus();
 
         if(st.equals("a")){
-            Log.d("Status", ":stataus: " + st);
             initLow(null);
         }else if(st.equals("b")){
-            Log.d("Status", ":stataus: " + st);
             initMed(null);
         }else if(st.equals("c")){
-            Log.d("Status", ":stataus: " + st);
             initHigh(null);
         }
 
         // set current date and time
         c = Calendar.getInstance();
         todaysDate = c.get(Calendar.YEAR) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.DAY_OF_MONTH);
-        Log.d("DATE", "Date: " + todaysDate);
         currentTime = pad(c.get(Calendar.HOUR)) + ":" + pad(c.get(Calendar.MINUTE));
-        Log.d("TIME", "Time: " + currentTime);
     }
 
     private String pad(int time) {
@@ -118,10 +112,8 @@ public class Edit extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.save) {
             Note note = new Note(nId, nTitle.getText().toString(), nContent.getText().toString(), todaysDate, currentTime, strGender);
-            Log.d("EDITED", "edited: before saving id -> " + note.getId());
             SimpleDatabase sDB = new SimpleDatabase(getApplicationContext());
             long id = sDB.editNote(note);
-            Log.d("EDITED", "EDIT: id " + id);
             goToMain();
             Toast.makeText(this, "Note Edited.", Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == R.id.delete) {

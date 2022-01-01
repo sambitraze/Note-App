@@ -121,20 +121,7 @@ public class AddNote extends AppCompatActivity {
     }
 
 
-    public void initLow(View view) {
-        initFemale(null);
-    }
-
-    public void initMed(View view) {
-        initMale(null);
-    }
-
-    public void initHigh(View view) {
-        initOther(null);
-    }
-
-    public void initFemale(View view) {
-        cvBtnFemale.setCardBackgroundColor(getResources().getColor(R.color.green));
+    public void initLow(View view) {cvBtnFemale.setCardBackgroundColor(getResources().getColor(R.color.green));
         cvBtnMale.setCardBackgroundColor(getResources().getColor(R.color.white));
         cvBtnOther.setCardBackgroundColor(getResources().getColor(R.color.white));
 
@@ -145,7 +132,8 @@ public class AddNote extends AppCompatActivity {
         strGender = "a";
     }
 
-    public void initMale(View view) {
+    public void initMed(View view) {
+
         cvBtnFemale.setCardBackgroundColor(getResources().getColor(R.color.white));
         cvBtnMale.setCardBackgroundColor(getResources().getColor(R.color.green));
         cvBtnOther.setCardBackgroundColor(getResources().getColor(R.color.white));
@@ -157,7 +145,8 @@ public class AddNote extends AppCompatActivity {
         strGender = "b";
     }
 
-    public void initOther(View view) {
+    public void initHigh(View view) {
+
         cvBtnOther.setCardBackgroundColor(getResources().getColor(R.color.green));
         cvBtnMale.setCardBackgroundColor(getResources().getColor(R.color.white));
         cvBtnFemale.setCardBackgroundColor(getResources().getColor(R.color.white));
@@ -168,7 +157,6 @@ public class AddNote extends AppCompatActivity {
 
 
         strGender = "c";
-
     }
 
 

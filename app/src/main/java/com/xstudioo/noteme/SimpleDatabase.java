@@ -1,15 +1,18 @@
 package com.xstudioo.noteme;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 public class SimpleDatabase extends SQLiteOpenHelper {
@@ -83,23 +86,50 @@ public class SimpleDatabase extends SQLiteOpenHelper {
         );
     }
 
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
     class sortByStatus implements Comparator<Note> {
         // Used for sorting in ascending order of
         // roll number
-        public int compare(Note a, Note b)
-        {
+        @SuppressLint("SimpleDateFormat")
+        public int compare(Note a, Note b) {
             String statusA = a.getStatus();
             String statusB = b.getStatus();
-            return statusA.compareTo(statusB);
+            Date dateA = null;
+            Date dateB = null;
+            try {
+                dateA = new SimpleDateFormat("dd/MM/yyyy HH:mm")
+                        .parse(a.getDate().concat(" ").concat(a.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try {
+                dateB = new SimpleDateFormat("dd/MM/yyyy HH:mm")
+                        .parse(b.getDate().concat(" ").concat(b.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int StatusCompare = statusB.compareTo(statusA);
+            int DateCompare = 0;
+            if (dateB.after(
+                    dateA)) {
+                DateCompare = 1;
+            } else if (dateB.before(dateA)) {
+                DateCompare = -1;
+            } else if (dateB.equals(dateA)) {
+                DateCompare = 0;
+            }
+            return (StatusCompare == 0) ? DateCompare
+                    : StatusCompare;
         }
     }
 
     public List<Note> getAllNotes() {
         ArrayList<Note> allNotes = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + KEY_ID + " DESC";
+//        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + KEY_ID + " DESC";
+        String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Log.d("note ", "Note: " + cursor);
         if (cursor.moveToFirst()) {
             do {
                 Note note = new Note();
@@ -113,7 +143,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        Collections.sort(allNotes,new sortByStatus());
+        Collections.sort(allNotes, new sortByStatus());
 
         return allNotes;
 
@@ -122,7 +152,6 @@ public class SimpleDatabase extends SQLiteOpenHelper {
     public int editNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues c = new ContentValues();
-        Log.d("Edited", "Edited Title: -> " + note.getTitle() + "\n ID -> " + note.getId());
         c.put(KEY_TITLE, note.getTitle());
         c.put(KEY_CONTENT, note.getContent());
         c.put(KEY_DATE, note.getDate());
