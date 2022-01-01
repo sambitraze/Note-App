@@ -88,7 +88,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-    class sortByStatus implements Comparator<Note> {
+    class sortNotes implements Comparator<Note> {
         // Used for sorting in ascending order of
         // roll number
         @SuppressLint("SimpleDateFormat")
@@ -143,7 +143,7 @@ public class SimpleDatabase extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        Collections.sort(allNotes, new sortByStatus());
+        Collections.sort(allNotes, new sortNotes());
 
         return allNotes;
 
